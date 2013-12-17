@@ -1,0 +1,233 @@
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body {font: 16px Helmet, Freesans, sans-serif;}
+
+body, select, input, textarea {color: #333;}
+
+a {color: #03f;}
+a:hover {color: #69f;}
+
+.wrapper {
+	counter-reset: menu-items;
+}
+
+header {
+	width: 100%;
+	margin: 0 0 .5em;
+	padding: .5em .7em;
+	background: #eee;
+	font-size: 1.5em;
+}
+
+nav {
+	margin: 1em 3em;
+	font-size: 1em;
+}
+
+header nav {
+	margin: .5em 0 0;
+	font-size: .5em;
+}
+
+nav li {
+	display: block;
+	list-style-type: none;
+	line-height: 150%;
+}
+
+header nav li {
+	display: inline-block;
+}
+
+[itemprop~="menu-section"] {
+	width: 100%;
+	margin-bottom: 2em;
+	padding: 0 1em;
+}
+
+[itemprop~="menu-section"] h1 {
+	text-transform: uppercase;
+	padding: 0 .2em .2em 0;
+	border-bottom: 1px solid #ccc;
+}
+
+[itemprop~="menu-section"] h1 + p {
+	margin: .4em 0 1em;
+	padding: 0 .2em .2em 0;
+	font-size: .8em;
+}
+
+[itemprop~="menu-section"] ol {
+	width: 100%;
+}
+
+[itemprop~="menu-section"] ol li {
+	padding: .75em;
+	list-style-type: none;
+}
+
+[itemprop~="menu-section"] ol li:nth-child(odd) {
+	background: #eee;
+}
+	
+[itemprop~="menu-section"] ol li dt {
+	display: inline-block;
+	vertical-align: top;
+	width: 90%;
+	margin-bottom: .2em;
+}
+
+[itemprop~="menu-section"] ol li dd[itemprop="item-price"] {
+	display: inline-block;
+	vertical-align: top;
+	width: 10%;
+}
+
+[itemprop~="menu-section"] ol li dd[itemprop="item-description"] {
+	display: block;
+	font-size: 90%;
+	line-height: 100%;
+	font-style: italic;
+}
+	
+[itemprop~="menu-section"] ol li dt:before {
+	counter-increment: menu-items;
+	content: counter(menu-items) ". ";
+}
+	
+@media screen and (max-width: 460px) {
+	
+	header {
+		padding-bottom: 0;
+	}
+	
+	header nav {
+		margin-top: -2em;
+		text-align: right;
+		cursor: pointer;
+	}
+
+	header nav:before {
+		content: "";
+		display: inline-block;
+		height: .2em;
+		width: 1.5em;
+		margin-right: -1em;
+		border-top: 8px double #222;
+		border-bottom: 3px solid #222;
+	}
+
+	header nav ol {
+		height: 0;
+		margin: 1em -3.8em 0 -2.7em;
+		text-indent: 2.7em;
+		overflow: hidden;
+		text-align: left;
+	}
+
+	header nav:active ol,
+	header nav:hover ol {
+		height: auto;
+	}
+
+	header nav li {
+		display: block;
+	}
+
+	header nav li a {
+		display: block;
+		list-style-type: none;
+		padding: .4em;
+		text-decoration: none;
+	}
+	
+	header nav li:nth-child(odd) a {
+		background: #fff;
+	}
+
+}
+	
+@media screen and (min-width: 960px) {
+
+	.wrapper {
+		width: 90%;
+		margin: 1em auto;
+	}
+	
+	header {
+		margin: 0 0 .5em;
+		padding: .5em 1em;
+		font-size: 2em;
+	}
+	
+	nav {
+		display: none;
+	}
+	
+	[itemprop~="menu-section"] {
+		display: inline-block;
+		width: 25%;
+		vertical-align: top;
+		margin-bottom: 0;
+		padding-right: 0;
+	}
+	
+
+	[itemprop~="menu-section"] h1 + ol {
+		margin-top: .4em;
+	}
+	
+	[itemprop~="menu-section"] ol li {
+		display: block;
+		position: relative;
+		margin-bottom: 1em;
+		padding: 0 0 .2em 0;
+		font-size: .9em;
+	}
+
+	[itemprop~="menu-section"] ol li:nth-child(odd) {
+		background: transparent;
+	}
+	
+	[itemprop~="menu-section"] ol li dl {
+		line-height: 110%;
+		padding: 0;
+	}
+	
+	[itemprop~="menu-section"] ol li dt {
+		margin-bottom: .3em;
+		padding-right: 3em;
+		font-weight: bold;
+	}
+	
+	[itemprop~="menu-section"] ol li dd[itemprop="item-description"] {
+		font-size: 90%;
+	}
+	
+	[itemprop~="menu-section"] ol li dd[itemprop="item-price"] {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: .5em;
+		width: auto;
+		font-weight: bold;
+	}
+
+}
+
+/* Print styles!
+-------------------------------------------------------------------------------*/
+@media print {
+
+
+
+}
+
+
+/* Media queries!
+-------------------------------------------------------------------------------*/
+
+@media screen and (min-width: 480px) {
+	
+		
+}
