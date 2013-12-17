@@ -215,19 +215,18 @@ header nav li {
 
 }
 
+@media screen and (min-width: 1500px) {
+	
+	body {
+		font-size: 22px;
+	}
+	
+}
+
 /* Print styles!
 -------------------------------------------------------------------------------*/
 @media print {
 
 
 
-}
-
-
-/* Media queries!
--------------------------------------------------------------------------------*/
-
-@media screen and (min-width: 480px) {
-	
-		
 }
