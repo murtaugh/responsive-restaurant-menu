@@ -1,8 +1,17 @@
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
-body {font: 16px Helmet, Freesans, sans-serif;}
+html,
+body {
+	min-height: 100%;
+	font: 16px Helmet, Freesans, sans-serif;
+}
 
-body, select, input, textarea {color: #333;}
+:-webkit-full-screen body {
+	padding-top: 1.2em;
+	font-size: 22px;
+	overflow: hidden;
+	max-height: 100%;
+}
 
 a {color: #03f;}
 a:hover {color: #69f;}
@@ -17,6 +26,10 @@ header {
 	padding: .5em .7em;
 	background: #eee;
 	font-size: 1.5em;
+}
+
+:-webkit-full-screen header {
+	display: none;
 }
 
 nav {
@@ -61,6 +74,10 @@ header nav li {
 	width: 100%;
 }
 
+[itemprop~="menu-section"] ol + h1 {
+	margin-top: 2em;
+}
+
 [itemprop~="menu-section"] ol li {
 	padding: .75em;
 	list-style-type: none;
@@ -94,7 +111,11 @@ header nav li {
 	counter-increment: menu-items;
 	content: counter(menu-items) ". ";
 }
-	
+
+.fullscreenSwitch {
+	display: none;
+}
+
 @media screen and (max-width: 460px) {
 	
 	header {
@@ -102,13 +123,15 @@ header nav li {
 	}
 	
 	header nav {
-		margin-top: -2em;
+		margin-top: -1em;
 		text-align: right;
 		cursor: pointer;
 	}
 
 	header nav:before {
 		content: "";
+		position: relative;
+		top: -1em;
 		display: inline-block;
 		height: .2em;
 		width: 1.5em;
@@ -118,16 +141,11 @@ header nav li {
 	}
 
 	header nav ol {
-		height: 0;
-		margin: 1em -3.8em 0 -2.7em;
+		display: none;
+		margin: 1em -1.4em 0 -2.7em;
 		text-indent: 2.7em;
 		overflow: hidden;
 		text-align: left;
-	}
-
-	header nav:active ol,
-	header nav:hover ol {
-		height: auto;
 	}
 
 	header nav li {
@@ -148,6 +166,10 @@ header nav li {
 }
 	
 @media screen and (min-width: 960px) {
+
+	body {
+		background: url(../img/tomato.jpg) bottom right no-repeat;
+	}
 
 	.wrapper {
 		width: 90%;
@@ -211,6 +233,29 @@ header nav li {
 		right: .5em;
 		width: auto;
 		font-weight: bold;
+	}
+	
+	.fullscreenSwitch {
+		display: block;
+		position: absolute;
+		bottom: 1em;
+		left: 1em;
+		width: 1.4em;
+		height: 1.4em;
+		background: url(../img/icon_15353.svg) no-repeat;
+		background-size: cover;
+		transition: all .2s ease-in-out;
+		opacity: .1;
+		cursor: pointer;
+	}
+	
+	.fullscreenSwitch:hover {
+		opacity: .6;
+		transform: scale(1.1);
+	}
+	
+	:-webkit-full-screen .fullscreenSwitch {
+		display: none;
 	}
 
 }

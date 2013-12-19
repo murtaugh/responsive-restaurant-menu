@@ -6,11 +6,11 @@ Stuff to add:
 * "new" and "special price" indicators
 * sub-item options (e.g. "add chicken: $2.50")
 * photos
-* add styles for very large screens (e.g. in-restaurant TV displays)
+* ~~add basic styles for very large screens (e.g. in-restaurant TV displays)~~
 
 Other misc. notes:
 
-* Styles are mobile first and probably an unsupportable mishmash of ems and percentages.
+* Styles are mobile first and probably an unsupportable mishmash of ems and percentages (maybe not — the large screen scale up went seamlessly).
 * The responsive nav is very rudimentary.
 * I'm not really a fan of the way the titles wrap around the item number.
 * At smallest size the price gets squished into the right margin.

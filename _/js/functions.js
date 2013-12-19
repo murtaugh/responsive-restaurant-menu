@@ -12,6 +12,45 @@
 	$(document).ready(function (){
 	
 		$('#menu-nav').appendTo('#menu-header');
+		
+		// Find the right method, call on correct element
+		function launchFullScreen(element) {
+			if(element.requestFullScreen) {
+				element.requestFullScreen();
+			} else if(element.mozRequestFullScreen) {
+				element.mozRequestFullScreen();
+			} else if(element.webkitRequestFullScreen) {
+				element.webkitRequestFullScreen();
+			}
+		}
+
+		$('html.fullscreen body').on('click', '#fullscreenSwitch', function(e) {
+			
+			launchFullScreen(document.documentElement);
+		
+		});
+		
+		$('#menu-nav').on('click', function(e) {
+			
+			e.preventDefault();
+			
+			$('#menu-nav ol').toggle();
+			
+		});
+		
+		$('#menu-nav ol a').on('click', function(e) {
+			
+			e.stopPropagation();
+		
+		});
+	
+	});
+	
+	$(window).load(function() {
+		
+		var fullscreenSwitch = '<span id="fullscreenSwitch" class="fullscreenSwitch"><span></span></span>';
+		
+		$('html.fullscreen body').append(fullscreenSwitch);
 	
 	});
 
