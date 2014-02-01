@@ -11,22 +11,75 @@
 
 	$(document).ready(function (){
 	
-		$('#menu-nav').appendTo('#menu-header');
-		
-		// Find the right method, call on correct element
-		function launchFullScreen(element) {
-			if(element.requestFullScreen) {
-				element.requestFullScreen();
-			} else if(element.mozRequestFullScreen) {
-				element.mozRequestFullScreen();
-			} else if(element.webkitRequestFullScreen) {
-				element.webkitRequestFullScreen();
-			}
-		}
-
-		$('html.fullscreen body').on('click', '#fullscreenSwitch', function(e) {
+		$('body:not(.editing)').on('focus', '[contenteditable]', function() {
 			
-			launchFullScreen(document.documentElement);
+			$('body').addClass('editing');
+		
+			storeCurrentValue = $(this).html();
+		
+			console.log(storeCurrentValue);
+			
+		});
+	
+		$('body.editing').on('blur', '[contenteditable]', function() {
+				
+				console.log('blur cancel');
+				
+				//$("*:focus").html(storeCurrentValue).blur();
+				
+				//$('body').removeClass('editing');
+			
+		});
+		
+		$('html').on('keydown', 'body.editing', function(e) {
+		
+			if (e.which == 13) {
+				
+				e.preventDefault();
+				
+				$("*:focus").blur();
+				
+				$('body').removeClass('editing');
+				
+				console.log('done editing');
+				
+			} else if (e.which == 27) {
+				
+				console.log('escape cancel');
+				
+				$("*:focus").html(storeCurrentValue).blur();
+				
+				$('body').removeClass('editing');
+				
+			};
+			
+		});
+		
+		$('html').on('keydown', 'body.fullscreen-true', function(e) {
+		
+			if (e.which == 27) {
+				
+				console.log('exiting full screen');
+				
+			};
+			
+		});
+			
+		$('#menu-nav').appendTo('#menu-header');
+
+		$('html.fullscreen body:not(.fullscreen-true)').on('click', '#fullscreenSwitch', function(e) {
+			
+			if (screenfull.enabled) {
+			
+				screenfull.request();
+				
+				$('body').addClass('fullscreen-true');
+			
+			} else {
+			
+				alert('fullscreen not supported by this browser');
+			
+			}
 		
 		});
 		
@@ -53,5 +106,15 @@
 		$('html.fullscreen body').append(fullscreenSwitch);
 	
 	});
+	
+	if (screenfull.enabled) {
+	
+		document.addEventListener(screenfull.raw.fullscreenchange, function () {
+		
+			console.log('Am I fullscreen? ' + (screenfull.isFullscreen ? 'Yes' : 'No'));
+			
+		});
+		
+	};
 
 })(window.jQuery);

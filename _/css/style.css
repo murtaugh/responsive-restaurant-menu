@@ -254,7 +254,12 @@ header nav li {
 		transform: scale(1.1);
 	}
 	
-	:-webkit-full-screen .fullscreenSwitch {
+	body.fullscreen-true {
+		background-color: pink;
+	}
+	
+	body.editing .fullscreenSwitch,
+	body.fullscreen-true .fullscreenSwitch {
 		display: none;
 	}
 
