@@ -4,6 +4,16 @@ html,
 body {
 	min-height: 100%;
 	font: 16px Helmet, Freesans, sans-serif;
+	cursor: default;
+}
+
+[contenteditable=true] {
+	cursor: text;
+}
+
+[contenteditable=true]:focus {
+	outline: 4px solid #ffffaa;
+	background: #ffffaa;
 }
 
 :-webkit-full-screen body {
@@ -71,6 +81,7 @@ header nav li {
 }
 
 [itemprop~="menu-section"] ol {
+	position: relative;
 	width: 100%;
 }
 
@@ -83,15 +94,55 @@ header nav li {
 	list-style-type: none;
 }
 
+[itemprop~="menu-section"] ol .add-item {
+	position: absolute;
+	z-index: 2;
+	top: calc(100% + 6px);
+	left: 0;
+	display: none;
+	padding: 2px 6px;
+	background: #00ae18;
+	color: #fff;
+	font-size: 11px;
+	border-radius: 12px;
+	cursor: pointer;
+}
+
+[itemprop~="menu-section"] ol:hover .add-item {
+	display: block;
+}
+
+[itemprop~="menu-section"] ol:hover:after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	display: block;
+	width: 100%;
+	height: 30px;
+}
+
+[itemprop~="menu-section"] ol .add-item:before {
+	content: "+ add item"
+}
+
 [itemprop~="menu-section"] ol li:nth-child(odd) {
 	background: #eee;
 }
 	
+[itemprop~="menu-section"] ol li .empty:not(:focus),
+[itemprop~="menu-section"] ol li .left-empty:not(:focus) {
+	color: #999;
+}
+
+[itemprop~="menu-section"] ol li .empty:not(:focus):after,
+[itemprop~="menu-section"] ol li:hover .left-empty:not(:focus):after {
+	content: attr(data-placeholder);
+}
+	
 [itemprop~="menu-section"] ol li dt {
-	display: inline-block;
+	display: inline;
 	vertical-align: top;
 	width: 90%;
-	margin-bottom: .2em;
 }
 
 [itemprop~="menu-section"] ol li dd[itemprop="item-price"] {
@@ -102,6 +153,7 @@ header nav li {
 
 [itemprop~="menu-section"] ol li dd[itemprop="item-description"] {
 	display: block;
+	margin-top: .3em;
 	font-size: 90%;
 	line-height: 100%;
 	font-style: italic;
@@ -217,7 +269,6 @@ header nav li {
 	}
 	
 	[itemprop~="menu-section"] ol li dt {
-		margin-bottom: .3em;
 		padding-right: 3em;
 		font-weight: bold;
 	}
@@ -232,7 +283,9 @@ header nav li {
 		top: 0;
 		right: .5em;
 		width: auto;
+		min-width: 1em;
 		font-weight: bold;
+		text-align: right;
 	}
 	
 	.fullscreenSwitch {
@@ -252,10 +305,6 @@ header nav li {
 	.fullscreenSwitch:hover {
 		opacity: .6;
 		transform: scale(1.1);
-	}
-	
-	body.fullscreen-true {
-		background-color: pink;
 	}
 	
 	body.editing .fullscreenSwitch,

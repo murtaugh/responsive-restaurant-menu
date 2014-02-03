@@ -9,25 +9,85 @@
 
 (function($){
 
+	var storeCurrentValue, addItemTimer;
+	
+	var addItemElement = '<span class="add-item"></span>';
+
+	var newItem = '<li>\
+				<dl itemscope itemprop="menu-item">\
+					<dt itemprop="item-name" spellcheck="false" contenteditable="true" class="empty" data-placeholder="item name">\
+					<dd itemprop="item-price" spellcheck="false" contenteditable="true" class="empty" data-placeholder="price">\
+					<dd itemprop="item-description" spellcheck="false" contenteditable="true" class="empty" data-placeholder="description">\
+				</dl>\
+			</li>';
+
 	$(document).ready(function (){
 	
-		$('body:not(.editing)').on('focus', '[contenteditable]', function() {
+		/*$('[itemprop~="menu-section"] ol').on('mouseover', function() {
 			
-			$('body').addClass('editing');
+			//console.log('show add item element');
+			
+			clearTimeout(addItemTimer);
+			$('.add-item').remove();
+			
+			$(this).append(addItemElement);
+			
+		});*/
+	
+		/*$('[itemprop~="menu-section"] ol').on('mouseleave', function() {
+			
+			addItemTimer = setTimeout(function () {
+			
+				console.log(addItemTimer);
+			
+				$('.add-item').remove();
+			
+			}, 1000);
+			
+		});*/
 		
-			storeCurrentValue = $(this).html();
+		$(document).on('click', '.add-item', function() {
+			
+			console.log('add new item');
+			
+			$(this).parent().append(newItem);
 		
-			console.log(storeCurrentValue);
+		});
+	
+		$('body:not(.fullscreen-true)').on('focus', '[contenteditable=true]', function(e) {
+			
+			e.stopImmediatePropagation();
+			
+			editBegin(this);
 			
 		});
 	
-		$('body.editing').on('blur', '[contenteditable]', function() {
+		$('body.editing').on('blur', '[contenteditable=true]', function() {
 				
-				console.log('blur cancel');
+			//console.log('blur cancel'); // contenteditable elements don't seem to be throwing a blur event
+			
+		});
+		
+		$(window).on('blur, focus', function() {
+			
+			console.log('window event');
+			editCancel();
+			
+		});
+		
+		$('body').click(function(e) {
+			
+			if ($(e.target).is('[contenteditable=true]')) {
+			 	
+				console.log('cancel event bubble');
+				return false;
 				
-				//$("*:focus").html(storeCurrentValue).blur();
+			} else {
+			 
+			 	console.log('clicked non-editable object');
+			 	editCancel();
 				
-				//$('body').removeClass('editing');
+			};
 			
 		});
 		
@@ -37,43 +97,21 @@
 				
 				e.preventDefault();
 				
-				$("*:focus").blur();
-				
-				$('body').removeClass('editing');
-				
-				console.log('done editing');
+				editSuccess();
 				
 			} else if (e.which == 27) {
 				
-				console.log('escape cancel');
-				
-				$("*:focus").html(storeCurrentValue).blur();
-				
-				$('body').removeClass('editing');
+				editCancel();
 				
 			};
 			
 		});
-		
-		$('html').on('keydown', 'body.fullscreen-true', function(e) {
-		
-			if (e.which == 27) {
-				
-				console.log('exiting full screen');
-				
-			};
-			
-		});
-			
-		$('#menu-nav').appendTo('#menu-header');
 
 		$('html.fullscreen body:not(.fullscreen-true)').on('click', '#fullscreenSwitch', function(e) {
 			
 			if (screenfull.enabled) {
 			
 				screenfull.request();
-				
-				$('body').addClass('fullscreen-true');
 			
 			} else {
 			
@@ -98,23 +136,79 @@
 		});
 	
 	});
+			
+	$('#menu-nav').appendTo('#menu-header');
 	
-	$(window).load(function() {
-		
-		var fullscreenSwitch = '<span id="fullscreenSwitch" class="fullscreenSwitch"><span></span></span>';
+	var fullscreenSwitch = '<span id="fullscreenSwitch" class="fullscreenSwitch"><span></span></span>';
+	
+	if (screenfull.enabled) {
 		
 		$('html.fullscreen body').append(fullscreenSwitch);
 	
-	});
-	
-	if (screenfull.enabled) {
-	
 		document.addEventListener(screenfull.raw.fullscreenchange, function () {
-		
-			console.log('Am I fullscreen? ' + (screenfull.isFullscreen ? 'Yes' : 'No'));
+			
+			if (screenfull.isFullscreen) {
+				
+				console.log('entering full screen');
+				
+				$('body').addClass('fullscreen-true');
+				
+				$('[contenteditable]').attr('contenteditable', false);
+				
+			} else {
+				
+				console.log('exiting full screen');
+				
+				$('body').removeClass('fullscreen-true');
+				
+				$('[contenteditable]').attr('contenteditable', true);
+				
+			};
 			
 		});
 		
+	};
+	
+	function editBegin(which) {
+	
+		editSuccess();
+		
+		$('body').addClass('editing');
+		
+		storeCurrentValue = $(which).html();
+	
+		console.log('begin editing: ' + storeCurrentValue);
+			
+	};
+	
+	function editSuccess() {
+	
+		if (!isEmpty($('*:focus'))) {
+		
+			$('*:focus').removeClass('empty, left-empty');
+			
+		};
+		
+		$("*:focus").blur();
+				
+		$('body').removeClass('editing');
+		
+		console.log('done editing');
+		
+	};
+	
+	function editCancel() {
+		
+		console.log('edit cancel');
+				
+		$("*:focus").html(storeCurrentValue).blur();
+		
+		$('body').removeClass('editing');
+		
+	};
+	
+	function isEmpty(el){
+		return !$.trim(el.html())
 	};
 
 })(window.jQuery);
