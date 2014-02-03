@@ -9,24 +9,115 @@
 
 (function($){
 
+	var storeCurrentValue, addItemTimer;
+	
+	var addItemElement = '<span class="add-item"></span>';
+
+	var newItem = '<li>\
+				<dl itemscope itemprop="menu-item">\
+					<dt itemprop="item-name" spellcheck="false" contenteditable="true" class="empty" data-placeholder="item name">\
+					<dd itemprop="item-price" spellcheck="false" contenteditable="true" class="empty" data-placeholder="price">\
+					<dd itemprop="item-description" spellcheck="false" contenteditable="true" class="empty" data-placeholder="description">\
+				</dl>\
+			</li>';
+
 	$(document).ready(function (){
 	
-		$('#menu-nav').appendTo('#menu-header');
-		
-		// Find the right method, call on correct element
-		function launchFullScreen(element) {
-			if(element.requestFullScreen) {
-				element.requestFullScreen();
-			} else if(element.mozRequestFullScreen) {
-				element.mozRequestFullScreen();
-			} else if(element.webkitRequestFullScreen) {
-				element.webkitRequestFullScreen();
-			}
-		}
-
-		$('html.fullscreen body').on('click', '#fullscreenSwitch', function(e) {
+		/*$('[itemprop~="menu-section"] ol').on('mouseover', function() {
 			
-			launchFullScreen(document.documentElement);
+			//console.log('show add item element');
+			
+			clearTimeout(addItemTimer);
+			$('.add-item').remove();
+			
+			$(this).append(addItemElement);
+			
+		});*/
+	
+		/*$('[itemprop~="menu-section"] ol').on('mouseleave', function() {
+			
+			addItemTimer = setTimeout(function () {
+			
+				console.log(addItemTimer);
+			
+				$('.add-item').remove();
+			
+			}, 1000);
+			
+		});*/
+		
+		$(document).on('click', '.add-item', function() {
+			
+			console.log('add new item');
+			
+			$(this).parent().append(newItem);
+		
+		});
+	
+		$('body:not(.fullscreen-true)').on('focus', '[contenteditable=true]', function(e) {
+			
+			e.stopImmediatePropagation();
+			
+			editBegin(this);
+			
+		});
+	
+		$('body.editing').on('blur', '[contenteditable=true]', function() {
+				
+			//console.log('blur cancel'); // contenteditable elements don't seem to be throwing a blur event
+			
+		});
+		
+		$(window).on('blur, focus', function() {
+			
+			console.log('window event');
+			editCancel();
+			
+		});
+		
+		$('body').click(function(e) {
+			
+			if ($(e.target).is('[contenteditable=true]')) {
+			 	
+				console.log('cancel event bubble');
+				return false;
+				
+			} else {
+			 
+			 	console.log('clicked non-editable object');
+			 	editCancel();
+				
+			};
+			
+		});
+		
+		$('html').on('keydown', 'body.editing', function(e) {
+		
+			if (e.which == 13) {
+				
+				e.preventDefault();
+				
+				editSuccess();
+				
+			} else if (e.which == 27) {
+				
+				editCancel();
+				
+			};
+			
+		});
+
+		$('html.fullscreen body:not(.fullscreen-true)').on('click', '#fullscreenSwitch', function(e) {
+			
+			if (screenfull.enabled) {
+			
+				screenfull.request();
+			
+			} else {
+			
+				alert('fullscreen not supported by this browser');
+			
+			}
 		
 		});
 		
@@ -45,13 +136,79 @@
 		});
 	
 	});
+			
+	$('#menu-nav').appendTo('#menu-header');
 	
-	$(window).load(function() {
-		
-		var fullscreenSwitch = '<span id="fullscreenSwitch" class="fullscreenSwitch"><span></span></span>';
+	var fullscreenSwitch = '<span id="fullscreenSwitch" class="fullscreenSwitch"><span></span></span>';
+	
+	if (screenfull.enabled) {
 		
 		$('html.fullscreen body').append(fullscreenSwitch);
 	
-	});
+		document.addEventListener(screenfull.raw.fullscreenchange, function () {
+			
+			if (screenfull.isFullscreen) {
+				
+				console.log('entering full screen');
+				
+				$('body').addClass('fullscreen-true');
+				
+				$('[contenteditable]').attr('contenteditable', false);
+				
+			} else {
+				
+				console.log('exiting full screen');
+				
+				$('body').removeClass('fullscreen-true');
+				
+				$('[contenteditable]').attr('contenteditable', true);
+				
+			};
+			
+		});
+		
+	};
+	
+	function editBegin(which) {
+	
+		editSuccess();
+		
+		$('body').addClass('editing');
+		
+		storeCurrentValue = $(which).html();
+	
+		console.log('begin editing: ' + storeCurrentValue);
+			
+	};
+	
+	function editSuccess() {
+	
+		if (!isEmpty($('*:focus'))) {
+		
+			$('*:focus').removeClass('empty, left-empty');
+			
+		};
+		
+		$("*:focus").blur();
+				
+		$('body').removeClass('editing');
+		
+		console.log('done editing');
+		
+	};
+	
+	function editCancel() {
+		
+		console.log('edit cancel');
+				
+		$("*:focus").html(storeCurrentValue).blur();
+		
+		$('body').removeClass('editing');
+		
+	};
+	
+	function isEmpty(el){
+		return !$.trim(el.html())
+	};
 
 })(window.jQuery);
