@@ -38,6 +38,10 @@ header {
 	font-size: 1.5em;
 }
 
+header h1 {
+	font-size: 3vw;
+}
+
 :-webkit-full-screen header {
 	display: none;
 }
@@ -70,12 +74,13 @@ header nav li {
 
 [itemprop~="menu-section"] h1 {
 	text-transform: uppercase;
-	padding: 0 .2em .2em 0;
+	padding: 0 .2em .4em 0;
 	border-bottom: 1px solid #ccc;
+	font-size: 1.4vw;
 }
 
 [itemprop~="menu-section"] h1 + p {
-	margin: .4em 0 1em;
+	margin: .6em 0 1em;
 	padding: 0 .2em .2em 0;
 	font-size: .8em;
 }
@@ -108,11 +113,11 @@ header nav li {
 	cursor: pointer;
 }
 
-[itemprop~="menu-section"] ol:hover .add-item {
+body:not(.fullscreen-true) [itemprop~="menu-section"] ol:hover .add-item {
 	display: block;
 }
 
-[itemprop~="menu-section"] ol:hover:after {
+body:not(.fullscreen-true) [itemprop~="menu-section"] ol:hover:after {
 	content: '';
 	position: absolute;
 	top: 100%;
@@ -130,17 +135,17 @@ header nav li {
 }
 	
 [itemprop~="menu-section"] ol li .empty:not(:focus),
-[itemprop~="menu-section"] ol li .left-empty:not(:focus) {
+body:not(.fullscreen-true) [itemprop~="menu-section"] ol li .left-empty:not(:focus) {
 	color: #999;
 }
 
 [itemprop~="menu-section"] ol li .empty:not(:focus):after,
-[itemprop~="menu-section"] ol li:hover .left-empty:not(:focus):after {
+body:not(.fullscreen-true) [itemprop~="menu-section"] ol li:hover .left-empty:not(:focus):after {
 	content: attr(data-placeholder);
 }
 	
 [itemprop~="menu-section"] ol li dt {
-	display: inline;
+	display: inline-block;
 	vertical-align: top;
 	width: 90%;
 }
@@ -149,6 +154,20 @@ header nav li {
 	display: inline-block;
 	vertical-align: top;
 	width: 10%;
+	text-align: right;
+	white-space: nowrap;
+}
+
+[itemprop~="menu-section"] ol li dd[itemprop="item-price"].sale {
+	background: rgba(255,255,0,1);
+	outline: .3em solid rgba(255,255,0,1);
+}
+
+[itemprop~="menu-section"] ol li dd[itemprop="item-price"].sale:before {
+	content: attr(original-price);
+	display: block;
+	text-decoration: line-through;
+	opacity: .4;
 }
 
 [itemprop~="menu-section"] ol li dd[itemprop="item-description"] {
@@ -248,7 +267,7 @@ header nav li {
 	
 
 	[itemprop~="menu-section"] h1 + ol {
-		margin-top: .4em;
+		margin-top: .6em;
 	}
 	
 	[itemprop~="menu-section"] ol li {
@@ -285,7 +304,6 @@ header nav li {
 		width: auto;
 		min-width: 1em;
 		font-weight: bold;
-		text-align: right;
 	}
 	
 	.fullscreenSwitch {

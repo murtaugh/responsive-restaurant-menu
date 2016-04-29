@@ -185,7 +185,7 @@
 	
 		if (!isEmpty($('*:focus'))) {
 		
-			$('*:focus').removeClass('empty, left-empty');
+			$('*:focus').removeClass('empty');
 			
 		};
 		
